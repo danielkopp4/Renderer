@@ -9,5 +9,7 @@ int main() {
     Ray r (a, b);
     std::cout << r.atT(1) << std::endl;
     std::cout << r.atT(1.7543) << std::endl;
+    
+    
     return 0;
 }
