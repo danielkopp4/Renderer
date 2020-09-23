@@ -14,46 +14,30 @@ const double& Vector::operator[](size_t i) const { // see if i can have a error 
         return x; 
     } else if (i == 1) {
         return y;
-    } else {
+    } else if (i == 2) {
         return z;
-    }
+    } else {
+		// print error
+		exit(1);
+	}
 }
 
 std::ostream& operator<< (std::ostream& out, const Vector& vector) {
     return out << "Vector(" << vector.x << ", " << vector.y << ", " << vector.z << ")";
 }
 
-
-{
-	// Place your snippets for cpp here. Each snippet is defined under a snippet name and has a prefix, body and 
-	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
-	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
-	// same ids are connected.
-	// Example:
-	// "Print to console": {
-	// 	"prefix": "log",
-	// 	"body": [
-	// 		"console.log('$1');",
-	// 		"$2"
-	// 	],
-	// 	"description": "Log output to console"
-	// }
-	"Print" : {
-		"prefix": "sout", 
-		"body" : [
-			"std::cout << $1 << std::endl;",
-			"$2"
-		],
-		"description": "prints to console"
-	}
-
-	"Include Guards" : {
-		"prefix" : "guard", 
-		"body" : [
-			"#ifndef __${TM_FILENAME_BASE}_hpp_",
-			"#define __${TM_FILENAME_BASE}_hpp_"
-			"$1",
-			"#endif\n"
-		]
-	}
+// rename to orthonormal system
+void ons(const Vector& vec1, Vector& vec2, Vector& vec3) { // rewrite
+    // vec2 = Vector(-vec1.get_y(), vec1.get_x(), vec1.get_z());
+    // vec3 = Vector(vec1.get_x(), -vec1.get_z(), vec1.get_y());
+    if (std::abs(vec1.x) > std::abs(vec1.y)) {
+		// project to the y = 0 plane and construct a normalized orthogonal vector in this plane
+		float invLen = 1.f / sqrtf(vec1.x * vec1.x + vec1.z * vec1.z);
+		vec2 = Vector(-vec1.z * invLen, 0.0f, vec1.x * invLen);
+    } else {
+		// project to the x = 0 plane and construct a normalized orthogonal vector in this plane
+		float invLen = 1.0f / sqrtf(vec1.y * vec1.y + vec1.z * vec1.z);
+		vec2 = Vector(0.0f, vec1.z * invLen, -vec1.y * invLen);
+    }
+    vec3 = vec1 % vec2;
 }
