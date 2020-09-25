@@ -8,6 +8,7 @@
 #include "renderer.hpp"
 #include "sphere.hpp"
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <time.h>
