@@ -17,7 +17,6 @@ TODO:
  - [X] Importance Sampling
  - [X] Russian Roulette Path Termination
  - [X] Next Event estimation
- - [X] 
  - [X] Implement Plane
  - [ ] Offload image as it renders
  - [ ] Implement triangles
