@@ -43,12 +43,12 @@ Radiance Renderer::get_radiance(Ray ray) const { // BTW if this doesnt work blam
         // INCLUDE IMPORTANCE SAMPLING!!!!!!!!!!!!
         // do if condition (russian roulette)
         // Vector direction = sampler->get_random_direction();
-        Ray new_ray = intersection.get_object().importance_sample(ray, intersection.get_t(), *sampler);
+        Ray new_ray = intersection.get_object().importance_sample(ray, intersection.get_t(), *sampler); // this might be messed up <====
         Radiance fr = intersection.get_object().brdf(ray, new_ray, intersection.get_t());
         double albedo = fr.get_average_light();
         double epsillon = sampler->get_sample(1)[0];
         // std::cout << albedo << std::endl;
-        if (epsillon < 10*albedo) { // russian roulette path termination
+        if (epsillon < 50*albedo) { // russian roulette path termination
             Radiance Li = get_radiance(new_ray);
             integral = integral + fr * Li; // mignt not work check signs on the cos term (dot)
             samples++;
