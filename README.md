@@ -23,4 +23,3 @@ TODO:
  - [ ] Create Unit testing framework (speed and accuracy)
  - [ ] Import OBJ files
  - [ ] Implement other BSDF types
- - [ ] Implement
