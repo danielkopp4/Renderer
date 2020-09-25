@@ -19,7 +19,7 @@ public:
     Intersection intersect(const Ray &ray) const;
     Vector get_normal(const Ray &ray, double t) const;
     Vector sample_light(Sampler &sampler) const;
-    bool operator==(Object &other) const;
+    bool is_equal(Object &other) const;
 };
 
 #endif

@@ -1,5 +1,7 @@
 #include "sphere.hpp"
 #include "intersection.hpp"
+#include "utils.hpp"
+#include "plane.hpp" // REMOVE
 
 #include <cmath>
 #include <iostream> // REMOVE
@@ -14,10 +16,6 @@ double Sphere::get_t(Ray ray) const {
 
     if (radicand < 0) {
         return -1;
-    } if (radicand == 0) {
-        double t = -B / (2 * A);
-        std::cout << t << std::endl;
-        return t > 0 ? t : -1;
     }
 
     double t1 = ((-1 * B) + sqrt(radicand)) / (2 * A);
@@ -28,15 +26,15 @@ double Sphere::get_t(Ray ray) const {
     // std::cout << t1 << std::endl;
     // std::cout << t2 << std::endl;
 
-    if (t1 <= 0 && t2 <= 0) {
+    if (t1 <= Utils::DOUBLE_EPS && t2 <= Utils::DOUBLE_EPS) {
         return -1;
     }
 
-    if (t1 <= 0) {
+    if (t1 <= Utils::DOUBLE_EPS) {
         return t2;
     }
 
-    if (t2 <= 0) {
+    if (t2 <= Utils::DOUBLE_EPS) {
         return t1;
     }
 
@@ -65,10 +63,15 @@ Vector Sphere::sample_light(Sampler& sampler) const {
     return center + sampler.get_random_sphere_direction() * radius;
 }
 
-bool Sphere::operator==(Object &other) const {
+bool Sphere::is_equal(Object &other) const {
+    // std::cout 
     if (Sphere* other_ = dynamic_cast<Sphere*>(&other)) {
         return radius == other_->radius && center == other_->center; 
     } 
+
+    // if (Plane* other_ = dynamic_cast<Plane*>(&other)) {
+    //     std::cout << "wrong place!" << std::endl; // maybe add brdf and emission but that seems unnesecary
+    // }
 
     return false;
 }

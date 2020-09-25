@@ -29,10 +29,14 @@ Radiance Renderer::get_radiance(Ray ray) const { // BTW if this doesnt work blam
         double total = 3.1415; // (b - a)
         int samples = 0;
         for (size_t i = 0; i < scene->get_lights().size(); ++i) {
+            
             Ray light_ray (point, scene->get_lights()[i]->sample_light(*sampler) - point);
             Intersection light_ray_intersection = scene->closest_intersection(light_ray);
-            if (light_ray_intersection.get_object() == *(scene->get_lights()[i])) {
+            // std::cout << "for: " << i << std::endl;
+            // std::cout << "intersection: " << light_ray_intersection.get_object().intersect(light_ray).get_t() << std::endl;
+            if (light_ray_intersection.isIntersection() && light_ray_intersection.get_object_ptr()->is_equal(*(scene->get_lights()[i]))) {
                 // Li(x, w') * fr(w, x, w') * cos(theta) * dw'
+                
                 integral = integral + scene->get_lights()[i]->get_emission(light_ray, light_ray_intersection.get_t()) * intersection.get_object().brdf(ray, light_ray, intersection.get_t());
             }
             // std::cout << integral.get_average_light() << std::endl;

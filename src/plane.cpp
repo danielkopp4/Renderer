@@ -1,5 +1,8 @@
 #include "plane.hpp"
 #include "intersection.hpp"
+#include "utils.hpp"
+
+#include <iostream> // REMOVE
 
 #include <cmath>
 
@@ -8,7 +11,17 @@ double Plane::get_t(const Ray &ray) const {
         return -1;
     }
 
-    return -((normal.dot(ray.get_origin() - point)) / (normal.dot(ray.get_direction())));
+    
+    double t = ((normal.dot(ray.get_origin() - point)) / (normal.dot(ray.get_direction() * -1)));
+
+    // std::cout << normal << point << std::endl;
+
+    if (t > Utils::DOUBLE_EPS) {
+        // std::cout << -((normal.dot(ray.get_origin() - point)) / (normal.dot(ray.get_direction()))) << std::endl;
+        return t;
+    } else {
+        return -1;
+    }
 }
 
 Intersection Plane::intersect(const Ray &ray) const {
@@ -33,10 +46,12 @@ Vector Plane::sample_light(Sampler &sampler) const {
 }
 
 Radiance Plane::get_emission(const Ray &ray, double t) const {
+    // std::cout << "us run" << std::endl;
     return (emission * (ray.get_origin() * -1).dot(normal));
 }
 
-bool Plane::operator==(Object &other) const {
+bool Plane::is_equal(Object &other) const {
+    // std::cout << "got here" << std::endl;
     if (Plane* other_ = dynamic_cast<Plane*>(&other)) {
         return normal == normal && point == point; // maybe add brdf and emission but that seems unnesecary
     }
