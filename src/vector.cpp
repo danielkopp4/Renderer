@@ -9,7 +9,11 @@ Vector& Vector::normalize() {
     return *this = *this / length();
 }
 
-const double& Vector::operator[](size_t i) const { // see if i can have a error return if not recognized i value
+const double& Vector::operator[](size_t i) const { 
+    return (*this)[i];
+}
+
+double& Vector::operator[](size_t i) { // see if i can have a error return if not recognized i value
     if (i == 0) {
         return x; 
     } else if (i == 1) {

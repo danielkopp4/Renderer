@@ -8,7 +8,7 @@
 #include "renderer.hpp"
 #include "sphere.hpp"
 #include<iostream>
-
+#include <fstream>
 
 int main() {
     // Scene a;
@@ -20,13 +20,17 @@ int main() {
     // std::cout << "t: " << d.get_t() << std::endl; 
     int height = 1000;
     int width = 1000;
-    double fov = 0.78539816339;
+    double fov = 1.57079632679;
     Ray view = Ray(Vector(0, 0, 0), Vector(0, 0, 1));
-    int samples = 20;
+    int samples = 10;
 
-    double distance_from_cam = 10;
-    double radius = 1;
-    Sphere sphere (radius, view.get_origin() + view.get_direction() * distance_from_cam);
+    Vector offset_1 (-0.75, 0, 3);
+    Vector offset_2 (0.75, 0, 3);
+    Vector offset_3 (0, 1, 4);
+    double radius = 0.5;
+    Sphere sphere (radius, view.get_origin() + offset_1, Radiance(1, 1, 1));
+    Sphere sphere_2(radius, view.get_origin() + offset_2);
+    Sphere sphere_3 (radius, view.get_origin() + offset_3, Radiance(50, 1, 1));
 
     Film film (samples, height, width);
     film.init();
@@ -45,7 +49,14 @@ int main() {
     // std::cout << close_0.get_direction() << std::endl;
     
     Scene scene;
-    scene.add_object(sphere);
+    scene.add_object(sphere_2);
+    scene.add_object(sphere_3);
+    scene.add_object(sphere); // if it turn off the view it creats a segmetation fault: investigate!
+    scene.add_light(sphere);
+    scene.add_object(sphere_3);
+    // Ray tester (Vector(0,0,0), Vector(-0.5,0,2));
+    // Intersection a = scene.closest_intersection(tester);
+    // sphere.get_emission(tester, a.get_t());
     Renderer renderer(film, scene, camera, sampler);
     for (int i = 0; i < samples; ++i) {
         renderer.take_sample();
@@ -53,7 +64,11 @@ int main() {
     // renderer.take_sample();
     
     // film.tone_map();
-    film.write_ppm(std::cout);
+
+    // film.print(std::cout);
+
+    std::ofstream out("render.ppm");
+    film.write_ppm(out);
     
     return 0;
 }

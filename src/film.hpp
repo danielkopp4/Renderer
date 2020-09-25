@@ -25,6 +25,8 @@ public:
     void init();
     void initialize_arr();
 
+    void print(std::ostream &out);
+
     std::ostream& write_ppm(std::ostream &out);
 
     void add_sample(int row, int col, Radiance sample);

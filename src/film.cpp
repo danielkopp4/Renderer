@@ -106,3 +106,12 @@ std::ostream& Film::write_ppm(std::ostream &out) {
     }
     return out;
 }
+
+void Film::print(std::ostream &out) {
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            out << avg_sample_set(samples[i][j], samples_progressed).get_average_light() << ", ";
+        }
+        out << std::endl;
+    }
+}

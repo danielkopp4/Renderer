@@ -12,6 +12,8 @@ private:
     Scene* scene;
     Camera* camera;
     Sampler* sampler;
+    
+    Radiance get_radiance(Ray ray) const;
 public:
     Renderer(Film &film_, Scene &scene_, Camera &camera_, Sampler &sampler_) : film(&film_), scene(&scene_), camera(&camera_), sampler(&sampler_) {} 
     void take_sample();

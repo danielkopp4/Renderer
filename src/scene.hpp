@@ -9,11 +9,15 @@
 class Scene {
 private:
     std::vector<Object*> objects;
+    std::vector<Object*> lights;
     // camera
     // lights
 public:
-    void add_object(Object& object);
+    void add_object(Object &object);
+    void add_light(Object &light);
     Intersection closest_intersection(const Ray& ray) const;
+    // Radiance get_light_sum();
+    const std::vector<Object*> get_lights() const { return lights; } // migrate this functionality to the above function
 };
 
 #endif

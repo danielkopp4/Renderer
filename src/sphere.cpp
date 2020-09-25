@@ -1,7 +1,11 @@
 #include "sphere.hpp"
 #include "intersection.hpp"
 
+#include <cmath>
+#include <iostream> // REMOVE
+
 double Sphere::get_t(Ray ray) const {
+
     double A = ray.get_direction().dot(ray.get_direction());
     double B = (ray.get_origin() - center).dot(ray.get_direction()) * 2;
     double C = (ray.get_origin() - center).dot(ray.get_origin() - center) - radius * radius;
@@ -12,14 +16,17 @@ double Sphere::get_t(Ray ray) const {
         return -1;
     } if (radicand == 0) {
         double t = -B / (2 * A);
+        std::cout << t << std::endl;
         return t > 0 ? t : -1;
     }
 
-    double t1 = (-B + sqrt(radicand)) / (2 * A);
-    double t2 = (-B - sqrt(radicand)) / (2 * A);
+    double t1 = ((-1 * B) + sqrt(radicand)) / (2 * A);
+    double t2 = ((-1  * B) - sqrt(radicand)) / (2 * A);
+
+    // return t1;
 
     // std::cout << t1 << std::endl;
-    
+    // std::cout << t2 << std::endl;
 
     if (t1 <= 0 && t2 <= 0) {
         return -1;
@@ -38,6 +45,7 @@ double Sphere::get_t(Ray ray) const {
 
 Intersection Sphere::intersect(const Ray &ray) const {
     double t = get_t(ray);
+    // std::cout << t << std::endl;
     if (t == -1) {
         // std::cout << ray.get_direction() << std::endl;
                 
@@ -46,4 +54,34 @@ Intersection Sphere::intersect(const Ray &ray) const {
         // std::cout << t << std::endl;
         return Intersection(get_t(ray), this);
     }
+}
+
+Vector Sphere::get_normal(const Ray &ray, double t) const {
+    Vector point = ray.get_origin() + ray.get_direction() * t;
+    return (point - center).normalize();
+}
+
+Vector Sphere::sample_light(Sampler& sampler) const {
+    return center + sampler.get_random_sphere_direction() * radius;
+}
+
+bool Sphere::operator==(Object &other) const {
+    if (Sphere* other_ = dynamic_cast<Sphere*>(&other)) {
+        return radius == other_->radius && center == other_->center; 
+    } 
+
+    return false;
+}
+
+Radiance Sphere::get_emission(const Ray &ray, double t) const {
+    // std::cout << "ray(origin=" << ray.get_origin()<< ", dir=" << ray.get_direction() << ")" << std::endl;
+    // Vector normal = get_normal(ray, t);
+    // std::cout << "normal: " << normal << std::endl;
+    // std::cout << "scale: " << (ray.get_direction() * -1).dot(get_normal(ray, t)) << std::endl;
+    // std::cout << "angle: " << acos((ray.get_direction() * -1).dot(get_normal(ray, t))) << std::endl;
+    // std::cout << "t: " << t << std::endl;
+    // std::cout << "center: " << center << std::endl;
+    // std::
+
+    return (emission * (ray.get_direction() * -1).dot(get_normal(ray, t))).abs();
 }

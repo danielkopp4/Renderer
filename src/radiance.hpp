@@ -22,7 +22,7 @@ public:
     Radiance exp() const { return Radiance(std::exp(r), std::exp(g), std::exp(b)); }
     Radiance log() const { return Radiance(std::log(r), std::log(g), std::log(b)); }
     Radiance pow(double n) const { return Radiance(std::pow(r, n), std::pow(g, n), std::pow(b, n)); }
-
+    Radiance abs() const { return Radiance(fabs(r), fabs(g), fabs(b)); }
     // double get_average_light() const { return (r + g + b) / 3; }
     double get_average_light() const { return 0.265*r + 0.67*g + 0.065*b; }
 
