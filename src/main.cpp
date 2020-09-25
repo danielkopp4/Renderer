@@ -7,9 +7,11 @@
 #include "sampler.hpp"
 #include "renderer.hpp"
 #include "sphere.hpp"
+#include "plane.hpp"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <stdio.h>
 #include <string>
 #include <time.h>
 
@@ -54,6 +56,8 @@ int main() {
     Sphere sphere_2(radius, view.get_origin() + offset_2);
     Sphere sphere_3 (radius, view.get_origin() + offset_3, Radiance(1, 1, 1));
 
+    Plane plane (Vector(0, 0, 5), Vector(0, 0, -1));
+
     Film film (samples, height, width);
     film.init();
     Camera camera(height, width, fov, view);
@@ -76,6 +80,7 @@ int main() {
     scene.add_object(sphere); // if it turn off the view it creats a segmetation fault(if something is a light but not an object): investigate!
     // scene.add_light(sphere);
     scene.add_object(sphere_3);
+    scene.add_object(plane);
     // Ray tester (Vector(0,0,0), Vector(-0.5,0,2));
     // Intersection a = scene.closest_intersection(tester);
     // sphere.get_emission(tester, a.get_t());

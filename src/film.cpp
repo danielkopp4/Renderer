@@ -3,6 +3,19 @@
 #include<iostream>
 #include<iomanip>
 
+Film::~Film() {
+    for (int i = 0; i < height; ++i) {
+        delete [] image[i];
+        for (int j = 0; j < width; ++j) {
+            delete [] samples[i][j];
+        }
+        delete [] samples[i];
+    }
+    
+    delete [] image;
+    delete [] samples;
+}
+
 Radiance Film::avg_sample_set(Radiance* sample_set, int samples_progressed) const {
     Radiance sum;
 

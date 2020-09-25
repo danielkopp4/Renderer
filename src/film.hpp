@@ -20,6 +20,7 @@ private:
     Radiance avg_sample_set(Radiance* sample_set, int samples_progressed) const; // actually a non member helper function move somewhere else
 public:
     Film(int samples_per_pixel_, int height_, int width_) : samples_per_pixel(samples_per_pixel_), height(height_), width(width_), samples_progressed(0) {}
+    ~Film();
 
     void tone_map(); // converts samples to rgb pixels (global tone mapping)
     void init();
@@ -36,6 +37,7 @@ public:
 
     void increment_sample_count() { samples_progressed++; }
     int get_total_samples() const { return samples_per_pixel; }
+    void save_intermediate() const;
 };
 
 #endif

@@ -52,7 +52,7 @@ Intersection Sphere::intersect(const Ray &ray) const {
         return Intersection();
     } else {
         // std::cout << t << std::endl;
-        return Intersection(get_t(ray), this);
+        return Intersection(t, this);
     }
 }
 
