@@ -1,5 +1,5 @@
 # Open Source Renderer (WIP)
-Implementation of phisically based ray tracing alorithm. To raster image it uses an implementation
+Implementation of physically based ray tracing alorithm. To raster image it uses an implementation
 of the Reinhard global operator tone mapping. There are no dependencies and is cross compatible.
 
 Here is a sample results so far (not full render just quick run):
