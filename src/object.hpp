@@ -20,8 +20,12 @@ public:
     virtual Vector get_normal(const Ray& in, double t) const = 0;
     virtual Radiance get_emission(const Ray &ray, double t) const = 0;
     Radiance brdf(const Ray &in, const Ray &out, double t) const { 
-        // std::cout << "scale: " << (distrib.get_albedo(in, out, get_normal(in, t), t) * ((in.get_direction() * -1).dot(get_normal(in, t)))).get_average_light() << std::endl; 
-        return (distrib.get_albedo(in, out, get_normal(in, t), t) * ((in.get_direction() * -1).dot(get_normal(in, t)))).abs(); 
+        // std::cout << "scale: " << fabs((in.get_direction() * -1).dot(get_normal(in, t))) << std::endl; 
+        // std::cout << in.get_direction() << " in dir" << std::endl;
+        // std::cout << get_normal(in, t) << " normal" << std::endl;
+        Radiance ret = (distrib.get_albedo(in, out, get_normal(in, t), t) * ((in.get_direction() * -1).dot(get_normal(in, t))));
+        return ret.clamp();
+        // return   (distrib.get_albedo(in, out, get_normal(in, t), t) * ((in.get_direction() * -1).dot(get_normal(in, t)))).abs()
     }
     virtual Vector sample_light(Sampler &sampler) const = 0;
 

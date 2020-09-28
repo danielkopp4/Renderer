@@ -11,7 +11,7 @@ Film::~Film() {
         }
         delete [] samples[i];
     }
-    
+
     delete [] image;
     delete [] samples;
 }

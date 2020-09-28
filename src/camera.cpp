@@ -11,10 +11,10 @@ Ray Camera::pix_to_ray(double x, double y) const {
     Vector dx;
     Vector dy;
     ons(dz, dy, dx);
-    // std::cout << "y: " << z << std::endl;
-    // std::cout << dx.get_z() << std::endl;
+    // std::cout << "z: " << z << std::endl;
+    // std::cout << dz.get_z() << std::endl;
     Vector direction = dx * x + dy * y + dz * z; //Vector(view.get_direction().get_x() * x, view.get_direction().get_y() * y, view.get_direction().get_z() * z);
-    // std::cout << direction.normalize() << std::endl;
+    // std::cout << "direction: " << direction.normalize() << std::endl;
     return Ray(origin, direction);
 }
 
@@ -31,5 +31,7 @@ Ray Camera::get_ray(double* sample, int row, int col) const {
     // y = tan(fov * double(height) / width) * (2 * y - height) / (height);
     // std::cout << x << std::endl;
     // std::cout << y << std::endl;
+    // std::cout << "sample x: " << sample[0] << std::endl;
+    // std::cout << "sample y: " << sample[1] << std::endl;
     return pix_to_ray(x, y);
 }

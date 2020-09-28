@@ -18,3 +18,12 @@ void Scene::add_object(Object &object) {
 void Scene::add_light(Object &light) {
     lights.push_back(&light);
 }
+
+bool Scene::is_light(const Object &light) const {
+    for (size_t i = 0; i < lights.size(); ++i) {
+        if (light.is_equal(*lights[i])) {
+            return true;
+        }
+    }
+    return false;
+}

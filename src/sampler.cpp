@@ -1,10 +1,13 @@
 #include "sampler.hpp"
 #include <cmath>
+#include <random>
 
 double* Sampler::get_sample(int n) {
     double* arr = new double[n];
     for (int i = 0; i < n; ++i) {
-        arr[i] = double(rand()) / RAND_MAX;
+        // arr[i] = double(rand()) / RAND_MAX;
+        // std::cout << (2.0*(double)rand_r(&seed)/RAND_MAX-1.0) << std::endl;
+        arr[i] = std::abs(2.0*(double)rand_r(&seed)/RAND_MAX-1.0);
     }
     return arr;
 }
@@ -17,7 +20,7 @@ Vector Sampler::get_random_direction() {
     return dir;
 }
 
-Vector Sampler::get_random_sphere_direction() {
+Vector Sampler::get_random_sphere_direction() { // change to unifrm sampling (take the cos and sin of random numbers)
     Vector dir;
     double* sample = get_sample(dir.size());
     for (int i = 0; i < dir.size(); ++i) {
