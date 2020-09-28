@@ -17,7 +17,7 @@ void Renderer::take_sample() {
 
 Radiance Renderer::get_radiance(Ray ray, int depth) const { // BTW if this doesnt work blame the cos term !!!!!!!!!
     Intersection intersection = scene->closest_intersection(ray);
-    if (intersection.isIntersection() || (depth == 2 && scene->is_light(intersection.get_object()))) {
+    if (intersection.isIntersection()) { // && !(depth > 0 && scene->is_light(intersection.get_object()))) {
         // std::cout << intersection.get_t() << std::endl;
         Vector point = ray.get_direction() * intersection.get_t() + ray.get_origin();
         // return Radiance(1,1,1) * cos(2 * (intersection.get_t() - 9.3096));
@@ -72,7 +72,7 @@ Radiance Renderer::get_radiance(Ray ray, int depth) const { // BTW if this doesn
         } 
 
         if (samples != 0) {
-            integral = (integral / samples) * 2 * total; 
+            integral = (integral / samples) * total; 
             integral = integral.abs();
             // std::cout << integral.get_average_light() << std::endl;
         } 

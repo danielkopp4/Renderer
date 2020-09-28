@@ -55,18 +55,18 @@ int main() {
     int width = 500;
     double fov = 1.57079632679;
     Ray view = Ray(Vector(0, 0, 0), Vector(0, 0, 1));
-    int samples = 2000;
+    int samples = 100;
 
     Vector offset_1 (-0.75, 0, 3);
     Vector offset_2 (0.75, 0, 3);
     // Vector offset_3 (-1 -1, -1);
     Vector offset_3 (0, 1, 4);
     double radius = 0.5;
-    Sphere sphere (radius, view.get_origin() + offset_1, Radiance(0, 0, 0), BRDF(Radiance(0.21, 0, 0)));
-    Sphere sphere_2(radius, view.get_origin() + offset_2, Radiance(0,0,0), BRDF(Radiance(0.5,0.5,0.5)));
+    Sphere sphere (radius, view.get_origin() + offset_1, Radiance(0, 0, 0), BRDF(Radiance(1, 0, 0)));
+    Sphere sphere_2(radius, view.get_origin() + offset_2);
     Sphere sphere_3 (radius, view.get_origin() + offset_3, Radiance(0.5, 0.5, 0.5));
 
-    Plane plane (Vector(0, 0, 3.5), Vector(0, 0.2, -1), BRDF(Radiance(0.23, 0.159, 0.12), Radiance(1, 1, 1), false)); //, BRDF(Radiance(1, 1, 1)), Radiance(1, 1, 1));
+    Plane plane (Vector(0, 0, 3.5), Vector(0, 0.2, -1), BRDF(Radiance(0.23, 0.159, 0.12), Radiance(0, 0, 0), false)); //, BRDF(Radiance(1, 1, 1)), Radiance(1, 1, 1));
 
     Film film (samples, height, width);
     film.init();
@@ -75,10 +75,10 @@ int main() {
     
     Scene scene;
     scene.add_object(sphere_2);
-    scene.add_light(sphere_3);
-    // scene.add_light(plane);
+    // scene.add_light(sphere_3);
     scene.add_object(sphere); // if it turn off the view it creats a segmetation fault(if something is a light but not an object): investigate!
     // scene.add_light(sphere);
+    scene.add_object(sphere_3);
     scene.add_object(sphere_3);
     // scene.add_object(plane);
     // Ray tester (Vector(0,0,0), Vector(-0.5,0,2));

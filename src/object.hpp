@@ -23,7 +23,7 @@ public:
         // std::cout << "scale: " << fabs((in.get_direction() * -1).dot(get_normal(in, t))) << std::endl; 
         // std::cout << in.get_direction() << " in dir" << std::endl;
         // std::cout << get_normal(in, t) << " normal" << std::endl;
-        Radiance ret = (distrib.get_albedo(in, out, get_normal(in, t), t) * ((in.get_direction() * -1).dot(get_normal(in, t))));
+        Radiance ret = (distrib.get_albedo(in, out, get_normal(in, t), t) * ((in.get_direction() * -1).dot(get_normal(in, t)))); // need to remove the lambertian when it is specular
         return ret.clamp();
         // return   (distrib.get_albedo(in, out, get_normal(in, t), t) * ((in.get_direction() * -1).dot(get_normal(in, t)))).abs()
     }
