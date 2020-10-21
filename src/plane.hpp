@@ -6,7 +6,7 @@
 #include "vector.hpp"
 
 class Plane : public Object {
-private:
+protected:
     Vector point;    
     Vector normal;
     double get_t(const Ray &ray) const;
@@ -17,10 +17,10 @@ public:
     } 
 
     Radiance get_emission(const Ray &ray, double t) const;
-    Intersection intersect(const Ray & ray) const;
+    virtual Intersection intersect(const Ray & ray) const;
     Vector get_normal(const Ray &ray, double t) const { return normal; }
-    Vector sample_light(Sampler &sampler) const;
-    bool is_equal(Object &other) const;
+    virtual Vector sample_light(Sampler &sampler) const;
+    virtual bool is_equal(Object &other) const;
 };
 
 #endif

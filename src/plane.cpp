@@ -47,7 +47,8 @@ Vector Plane::sample_light(Sampler &sampler) const {
 
 Radiance Plane::get_emission(const Ray &ray, double t) const {
     // std::cout << "us run" << std::endl;
-    return (emission * (ray.get_origin() * -1).dot(normal));
+    // std::cout << (emission * (ray.get_direction() * -1).dot(normal)).get_average_light() << std::endl;
+    return (emission * (ray.get_direction() * -1).dot(normal)).abs(); // possible error (take the absolute value when there are two normals)
 }
 
 bool Plane::is_equal(Object &other) const {

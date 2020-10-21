@@ -8,12 +8,15 @@ private:
     double x;
     double y;
     double z;
+
+    void floor_zero(double &num) const;
 public:
     Vector(double x_=0, double y_=0, double z_=0) : x(x_), y(y_), z(z_) {}
 
     double length() const;
     size_t size() const { return 3; }
-    Vector& normalize();    
+    Vector& normalize(); 
+    Vector& zero_sign();
 
     Vector operator+(const Vector& other) const { return Vector(x + other.x, y + other.y, z + other.z); }
     Vector operator-(const Vector& other) const { return Vector(x - other.x, y - other.y, z - other.z); }
@@ -42,8 +45,8 @@ public:
     double get_z() const { return z; }
 
     friend void ons(const Vector& vec1, Vector& vec2, Vector& vec3);
+    friend double determinant(const Vector& v1, const Vector &v2, const Vector &v3);
 };
-
 
 
 #endif

@@ -1,12 +1,27 @@
 #include<cmath>
+#include "utils.hpp"
 #include "vector.hpp"
+
+void Vector::floor_zero(double &num) const {
+    if (std::abs(num) < Utils::DOUBLE_EPS) {
+        num = 0;
+    }
+}
 
 double Vector::length() const {
     return sqrt(x*x + y*y + z*z);
 }
 
 Vector& Vector::normalize() {
+    zero_sign();
     return *this = *this / length();
+}
+
+Vector& Vector::zero_sign() {
+    floor_zero(x);
+    floor_zero(y);
+    floor_zero(z);
+    return *this;
 }
 
 const double& Vector::operator[](size_t i) const { 
@@ -44,4 +59,11 @@ void ons(const Vector& vec1, Vector& vec2, Vector& vec3) { // rewrite
 		vec2 = Vector(0.0f, vec1.z * invLen, -vec1.y * invLen);
     }
     vec3 = vec1 % vec2;
+}
+
+double determinant(const Vector &v1, const Vector &v2, const Vector &v3) {
+    double t1 = v1.x * (v2.y * v3.z - v3.y * v2.z);
+    double t2 = -1 * v2.x * (v1.y * v3.z - v3.y * v1.z);
+    double t3 = v3.x * (v1.y * v2.z - v2.y * v1.z);
+    return t1 + t2 + t3;
 }

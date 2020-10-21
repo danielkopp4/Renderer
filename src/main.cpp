@@ -9,6 +9,7 @@
 #include "sphere.hpp"
 #include "plane.hpp"
 #include "utils.hpp"
+#include "triangle.hpp"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -16,20 +17,13 @@
 #include <string>
 #include <time.h>
 
-void print_progress(int samples_progressed, int total, time_t start) {
+void print_progress(int samples_progressed, int total) {
     std::cout << " [";
     int total_bars = 20;
     double percent_completion = double(samples_progressed) / total;
     // time_t now;
     // time(&now);
     // int seconds_passed = difftime(now, start);
-    int eta;
-    if (percent_completion < Utils::DOUBLE_EPS) {
-        eta = -1;
-    } else {
-        // eta = seconds_passed * (1 - percent_completion) / percent_completion;
-        eta = 1;
-    }
     
     for (int i = 0; i < total_bars; ++i) {
         if (i < int(percent_completion * total_bars)) {
@@ -43,7 +37,7 @@ void print_progress(int samples_progressed, int total, time_t start) {
     }
 
     std::cout << "] " << std::fixed << std::setprecision(0) << (100 * percent_completion) << "%";
-    std::cout << " ETA: [" << eta << "]" << "\r" << std::flush;
+    std::cout << "\r" << std::flush;
 }
 
 int main() {    
@@ -55,7 +49,7 @@ int main() {
     int width = 500;
     double fov = 1.57079632679;
     Ray view = Ray(Vector(0, 0, 0), Vector(0, 0, 1));
-    int samples = 100;
+    int samples = 500;
 
     Vector offset_1 (-0.75, 0, 3);
     Vector offset_2 (0.75, 0, 3);
@@ -67,6 +61,9 @@ int main() {
     Sphere sphere_3 (radius, view.get_origin() + offset_3, Radiance(0.5, 0.5, 0.5));
 
     Plane plane (Vector(0, 0, 3.5), Vector(0, 0.2, -1), BRDF(Radiance(0.23, 0.159, 0.12), Radiance(0, 0, 0), false)); //, BRDF(Radiance(1, 1, 1)), Radiance(1, 1, 1));
+    Vector verticies[3] = { Vector(-0.5, -0.5, 1), Vector(0.5, 0, 1), Vector(0, 0.5, 1)};
+    Triangle tri(verticies, BRDF(Radiance(1,1,1)), Radiance(1, 1, 1));
+
 
     Film film (samples, height, width);
     film.init();
@@ -74,13 +71,14 @@ int main() {
     Sampler sampler;
     
     Scene scene;
-    scene.add_object(sphere_2);
+    // scene.add_object(sphere_2);
     // scene.add_light(sphere_3);
-    scene.add_object(sphere); // if it turn off the view it creats a segmetation fault(if something is a light but not an object): investigate!
+    // scene.add_object(sphere); // if it turn off the view it creats a segmetation fault(if something is a light but not an object): investigate!
     // scene.add_light(sphere);
-    scene.add_object(sphere_3);
-    scene.add_object(sphere_3);
+    // scene.add_object(sphere_3); // Importance sampling / monte carlo / nee is not working (too bright figure out what to use for px and research mis)
+    // scene.add_object(sphere_3);
     // scene.add_object(plane);
+    scene.add_object(tri);
     // Ray tester (Vector(0,0,0), Vector(-0.5,0,2));
     // Intersection a = scene.closest_intersection(tester);
     // sphere.get_emission(tester, a.get_t());
@@ -89,7 +87,7 @@ int main() {
     Renderer renderer(film, scene, camera, sampler);
     for (int i = 0; i < samples; ++i) {
         renderer.take_sample();
-        // print_progress(i, samples, start);
+        print_progress(i , samples);
     }
     // renderer.take_sample();
     
