@@ -5,12 +5,12 @@
 #include "ray.hpp"
 #include "vector.hpp"
 #include "plane.hpp"
+#include <algorithm>
 
 class Triangle : public Plane {
 private:
     Vector* verticies;
     Vector calculate_normal(Vector vert[3]) {
-        // std::cout << vert[0] << " " << vert[1] << " " << vert[2] << std::endl;
 
         Vector u = vert[1] - vert[0];
         Vector v = vert[2] - vert[0];
@@ -29,8 +29,18 @@ private:
     }
 public:
     Triangle(Vector verticies_[3], BRDF distrib_=BRDF(), Radiance emission_=Radiance()) : Plane((verticies_[0] + verticies_[1] + verticies_[2]) / 3, calculate_normal(verticies_), distrib_, emission_) { 
-        verticies = verticies_;
+        verticies = new Vector[3];
+        std::copy(verticies_, verticies_+3, verticies);
     } 
+
+    Triangle(const Triangle &other) : Plane(other.point, other.normal, other.distrib, other.emission) {
+        verticies = new Vector[3];
+        std::copy(other.verticies, other.verticies + 3, verticies);
+    }
+
+    Object* clone() const {
+        return new Triangle(*this);
+    }
 
     Intersection intersect(const Ray &ray) const {
         Vector a = ray.get_direction() * -1;
@@ -79,6 +89,10 @@ public:
             return true;
         }  
         return false;
+    }
+
+    void print() {
+        std::cout << verticies[0] << " " << verticies[1] << " " << verticies[2] << std::endl;
     }
 };
 

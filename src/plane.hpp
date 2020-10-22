@@ -16,6 +16,8 @@ public:
         emission = emission_;
     } 
 
+    virtual Object* clone() const;
+
     Radiance get_emission(const Ray &ray, double t) const;
     virtual Intersection intersect(const Ray & ray) const;
     Vector get_normal(const Ray &ray, double t) const { return normal; }

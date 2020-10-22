@@ -6,6 +6,10 @@
 
 #include <cmath>
 
+Object* Plane::clone() const {
+    return new Plane(*this);
+}
+
 double Plane::get_t(const Ray &ray) const {
     if (ray.get_direction().dot(normal) == 0) {
         return -1;

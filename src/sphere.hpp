@@ -20,6 +20,7 @@ public:
     Vector get_normal(const Ray &ray, double t) const;
     Vector sample_light(Sampler &sampler) const;
     bool is_equal(Object &other) const;
+    Object* clone() const;
 };
 
 #endif

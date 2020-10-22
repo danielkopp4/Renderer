@@ -11,12 +11,12 @@ Intersection Scene::closest_intersection(const Ray& ray) const {
     return closestIntersection;
 }
 
-void Scene::add_object(Object &object) {
-    objects.push_back(&object);
+void Scene::add_object(const Object &object) {
+    objects.push_back(object.clone());
 }
 
-void Scene::add_light(Object &light) {
-    lights.push_back(&light);
+void Scene::add_light(const Object &light) {
+    lights.push_back(light.clone());
 }
 
 bool Scene::is_light(const Object &light) const {

@@ -6,6 +6,10 @@
 #include <cmath>
 #include <iostream> // REMOVE
 
+Object* Sphere::clone() const {
+    return new Sphere(*this);
+}
+
 double Sphere::get_t(Ray ray) const {
 
     double A = ray.get_direction().dot(ray.get_direction());

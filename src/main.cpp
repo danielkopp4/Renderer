@@ -10,6 +10,7 @@
 #include "plane.hpp"
 #include "utils.hpp"
 #include "triangle.hpp"
+#include "obj_loader.hpp"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -40,17 +41,7 @@ void print_progress(int samples_progressed, int total) {
     std::cout << "\r" << std::flush;
 }
 
-int main() {    
-    // time_t start;
-    // time_t end;
-    // time(&start);
-    
-    int height = 500;
-    int width = 500;
-    double fov = 1.57079632679;
-    Ray view = Ray(Vector(0, 0, 0), Vector(0, 0, 1));
-    int samples = 500;
-
+void add_sample_scene(const Ray &view, Scene &scene) {
     Vector offset_1 (-0.75, 0, 3);
     Vector offset_2 (0.75, 0, 3);
     // Vector offset_3 (-1 -1, -1);
@@ -64,13 +55,6 @@ int main() {
     Vector verticies[3] = { Vector(-0.5, -0.5, 1), Vector(0.5, 0, 1), Vector(0, 0.5, 1)};
     Triangle tri(verticies, BRDF(Radiance(1,1,1)), Radiance(1, 1, 1));
 
-
-    Film film (samples, height, width);
-    film.init();
-    Camera camera(height, width, fov, view);
-    Sampler sampler;
-    
-    Scene scene;
     // scene.add_object(sphere_2);
     // scene.add_light(sphere_3);
     // scene.add_object(sphere); // if it turn off the view it creats a segmetation fault(if something is a light but not an object): investigate!
@@ -79,12 +63,43 @@ int main() {
     // scene.add_object(sphere_3);
     // scene.add_object(plane);
     scene.add_object(tri);
+}
+
+int main() {    
+    // time_t start;
+    // time_t end;
+    // time(&start);
+    
+    int height = 500;
+    int width = 500;
+    double fov = 1.57079632679;
+    Ray view = Ray(Vector(0, 0, 0), Vector(0, 0, 1));
+    int samples = 250;
+
+   
+
+
+    Film film (samples, height, width);
+    film.init();
+    Camera camera(height, width, fov, view);
+    Sampler sampler;
+    
+    Scene scene;
+
+    // add_sample_scene(view, scene);
+    ObjLoader obj_loader("obj/test_shape.obj");
+    obj_loader.parse();
+    obj_loader.offset(Vector(0, 0, 5));
+    obj_loader.add_to_scene(scene);
+    std::cout << "finished loading 3d object" << std::endl;
+    
     // Ray tester (Vector(0,0,0), Vector(-0.5,0,2));
     // Intersection a = scene.closest_intersection(tester);
     // sphere.get_emission(tester, a.get_t());
 
     std::cout << "starting..." << "\r" << std::flush;
     Renderer renderer(film, scene, camera, sampler);
+    // std::cout << "dedededed" <<std::endl;
     for (int i = 0; i < samples; ++i) {
         renderer.take_sample();
         print_progress(i , samples);

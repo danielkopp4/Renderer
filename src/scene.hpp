@@ -13,8 +13,8 @@ private:
     // camera
     // lights
 public:
-    void add_object(Object &object);
-    void add_light(Object &light);
+    void add_object(const Object &object);
+    void add_light(const Object &light);
     bool is_light(const Object &light) const;
     Intersection closest_intersection(const Ray& ray) const;
     // Radiance get_light_sum();

@@ -16,6 +16,7 @@ protected:
     Radiance emission;
     BRDF distrib;
 public:
+    virtual Object* clone() const = 0;
     virtual Intersection intersect(const Ray& ray) const = 0;
     virtual Vector get_normal(const Ray& in, double t) const = 0;
     virtual Radiance get_emission(const Ray &ray, double t) const = 0;
