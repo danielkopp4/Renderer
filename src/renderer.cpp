@@ -58,7 +58,7 @@ Radiance Renderer::get_radiance(Ray ray, int depth) const { // BTW if this doesn
         double min_depth = 5;
         // std::cout << albedo << std::endl;
         // if (epsillon < 50*albedo) { // russian roulette path termination
-        if (depth <= min_depth || epsillon > px) {
+        if (false && depth <= min_depth || epsillon > px) {
             // std::cout << "new ray: " << new_ray.get_direction() << std::endl;
             Radiance Li = get_radiance(new_ray, depth+1);
             if (depth <= min_depth) {

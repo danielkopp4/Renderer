@@ -10,7 +10,6 @@ Vertex::Vertex(const std::string &input) {
 
     // std::cout << input << std::endl;
     // std::cout << current_index << " " << next_index << std::endl;
-   
 
     double x = std::stof(input.substr(current_index + 1, next_index - current_index - 1));
     current_index = next_index;
@@ -178,8 +177,6 @@ void ObjLoader::create_face(const std::string &input) {
         // std::cout << verticies[std::stoi(sub.substr(inner_curr_index, inner_next_index - inner_curr_index))].vector << std::endl;
         verticies_[i] = verticies[std::stoi(sub.substr(inner_curr_index, inner_next_index - inner_curr_index))];
 
-
-
         inner_curr_index = inner_next_index;
         inner_next_index = sub.find('/', inner_curr_index + 1);
 
@@ -190,8 +187,7 @@ void ObjLoader::create_face(const std::string &input) {
 
         curr_index = next_index;
     }
-
-    faces.emplace_back(verticies_, textures_, normals_);
+    faces.push_back(Face(verticies_, textures_, normals_));
 }
 
 void ObjLoader::add_to_scene(Scene &scene) {

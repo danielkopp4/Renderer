@@ -87,7 +87,7 @@ int main() {
     Scene scene;
 
     // add_sample_scene(view, scene);
-    ObjLoader obj_loader("obj/test_shape.obj");
+    ObjLoader obj_loader("/obj/test_shape.obj");
     obj_loader.parse();
     obj_loader.offset(Vector(0, 0, 5));
     obj_loader.add_to_scene(scene);
