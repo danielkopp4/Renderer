@@ -23,6 +23,6 @@ TODO:
  - [ ] Create Unit testing framework (speed and accuracy)
  - [X] Multithreading
  - [X] Import OBJ files
- - [ ] Implement spacial mapping
+ - [ ] Implement spacial mapping (log n)
  - [ ] Implement other BSDF types
  - [ ] Clean Code
