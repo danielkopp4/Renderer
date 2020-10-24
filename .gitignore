@@ -5,7 +5,6 @@
 *.slo
 *.lo
 *.o
-*.obj
 
 # Precompiled Headers
 *.gch
@@ -45,3 +44,4 @@ _deps
 .vscode
 
 infer-out
+.DS_Store

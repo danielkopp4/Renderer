@@ -6,8 +6,9 @@
 
 class Sampler {
     unsigned int seed;
+    bool in_use;
 public:
-    Sampler() { seed = time(NULL); }
+    Sampler() { seed = time(NULL); in_use = false; }
     double* get_sample(int n=2);
     Vector get_random_sphere_direction();
     Vector get_random_direction();

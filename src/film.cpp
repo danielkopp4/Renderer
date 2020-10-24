@@ -78,10 +78,14 @@ void Film::init() {
     //     }
     // }
     samples_progressed = 0;
+    sample_pixels_received = 0;
 }
 
-void Film::add_sample(int row, int col, Radiance sample) {
-    samples[row][col][samples_progressed] = sample;
+void Film::add_sample(int row, int col, Radiance sample, int count) {
+    samples[row][col][count] = sample;
+    mutex.lock();
+    sample_pixels_received++;
+    mutex.unlock();
 }
 
 void Film::initialize_arr() {

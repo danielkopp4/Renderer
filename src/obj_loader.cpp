@@ -93,6 +93,7 @@ void ObjLoader::parse() {
     load_verticies();
     load_textures();
     load_normals();
+    // std::cout << "finished normals" << std::endl;
     load_faces();
 
     // std::cout << "ALSO AT THE END: " << faces.back().verticies[0].vector << std::endl;
@@ -175,15 +176,15 @@ void ObjLoader::create_face(const std::string &input) {
 
 
         // std::cout << verticies[std::stoi(sub.substr(inner_curr_index, inner_next_index - inner_curr_index))].vector << std::endl;
-        verticies_[i] = verticies[std::stoi(sub.substr(inner_curr_index, inner_next_index - inner_curr_index))];
+        verticies_[i] = verticies[std::stoi(sub.substr(inner_curr_index, inner_next_index - inner_curr_index)) - 1];
 
         inner_curr_index = inner_next_index;
         inner_next_index = sub.find('/', inner_curr_index + 1);
 
-        textures_[i] = textures[std::stoi(sub.substr(inner_curr_index + 1, inner_next_index - inner_curr_index - 1))];
+        textures_[i] = textures[std::stoi(sub.substr(inner_curr_index + 1, inner_next_index - inner_curr_index - 1)) - 1];
 
 
-        normals_[i] = normals[std::stoi(sub.substr(inner_next_index + 1))];
+        normals_[i] = normals[std::stoi(sub.substr(inner_next_index + 1)) - 1];
 
         curr_index = next_index;
     }

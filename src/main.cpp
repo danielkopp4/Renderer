@@ -74,7 +74,7 @@ int main() {
     int width = 500;
     double fov = 1.57079632679;
     Ray view = Ray(Vector(0, 0, 0), Vector(0, 0, 1));
-    int samples = 250;
+    int samples = 150;
 
    
 
@@ -87,7 +87,7 @@ int main() {
     Scene scene;
 
     // add_sample_scene(view, scene);
-    ObjLoader obj_loader("/obj/test_shape.obj");
+    ObjLoader obj_loader("obj/test_shape.obj");
     obj_loader.parse();
     obj_loader.offset(Vector(0, 0, 5));
     obj_loader.add_to_scene(scene);
@@ -100,10 +100,12 @@ int main() {
     std::cout << "starting..." << "\r" << std::flush;
     Renderer renderer(film, scene, camera, sampler);
     // std::cout << "dedededed" <<std::endl;
-    for (int i = 0; i < samples; ++i) {
-        renderer.take_sample();
-        print_progress(i , samples);
+    for (int i = 0; i < 1; ++i) {
+        renderer.take_sample(samples);
+        // print_progress(i , samples);
     }
+
+    renderer.wait_to_finish();
     // renderer.take_sample();
     
     // film.tone_map();
@@ -117,6 +119,7 @@ int main() {
     std::string file_name = "render.ppm";
     std::ofstream out(file_name);
     film.write_ppm(out);
+    out.close();
 
     std::cout << "wrote to: '" << file_name << "'" << std::endl;
     

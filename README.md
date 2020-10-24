@@ -19,8 +19,10 @@ TODO:
  - [X] Next Event estimation
  - [X] Implement Plane
  - [ ] Offload image as it renders
- - [ ] Implement triangles
+ - [X] Implement triangles
  - [ ] Create Unit testing framework (speed and accuracy)
- - [ ] Import OBJ files
+ - [X] Multithreading
+ - [X] Import OBJ files
+ - [ ] Implement spacial mapping
  - [ ] Implement other BSDF types
  - [ ] Clean Code

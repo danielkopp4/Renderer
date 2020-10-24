@@ -3,16 +3,49 @@
 #include "sampler.hpp"
 #include "ray.hpp"
 #include <cmath>
+#include <thread>
 
-void Renderer::take_sample() {
+
+#define THREADDING true
+
+Renderer::Renderer(Film &film_, Scene &scene_, Camera &camera_, Sampler &sampler_) : film(&film_), scene(&scene_), camera(&camera_), sampler(&sampler_) {
+    threadPooler = new ThreadPooler(20000);
+} 
+
+void Renderer::take_sample(int samples) {
     for (int i = 0; i < film->get_height(); ++i) {
         for (int j = 0; j < film->get_width(); ++j) {
-            Ray ray = camera->get_ray(sampler->get_sample(), i, j);
-            // std::cout << "camera ray: " << ray.get_direction() << std::endl;
-            film->add_sample(i, j, get_radiance(ray, 0));
+            if (THREADDING) {
+                // std::thread* thread = new std::thread(&Renderer::add_pixel, this, i, j, samples);
+                // threadPooler->add_thread(thread);
+                threadPooler->add_thread(this, i, j, samples);
+            } else {
+                // add_pixel(i, j, samples, );
+                std::cerr << "NO NON THREADDED PIXEL THING" << std::endl;
+            }
         }
+
+        std::cout << ((100 * i) / film->get_height()) << "%" << "\r" << std::flush;
     }
-    film->increment_sample_count();
+    threadPooler->wait_to_finish();
+    // threadPooler->clean_list();
+    // film->increment_sample_count();
+    film->set_sample_count(samples);
+}
+
+void Renderer::add_pixel(int i , int j, int samples, unsigned int id) {
+    for (int k = 0; k < samples; k++) {
+        // std::cout << i << ' ' << j << std::endl;
+        Ray ray = camera->get_ray(sampler->get_sample(), i, j);
+        // std::cout << "camera ray: " << ray.get_direction() << std::endl;
+        film->add_sample(i, j, get_radiance(ray, 0), k);
+    }
+    threadPooler->finish_thread(id);
+}
+
+void Renderer::wait_to_finish() {
+    // threadPooler->clean_list();
+    threadPooler->wait_to_finish();
 }
 
 Radiance Renderer::get_radiance(Ray ray, int depth) const { // BTW if this doesnt work blame the cos term !!!!!!!!!
@@ -58,7 +91,7 @@ Radiance Renderer::get_radiance(Ray ray, int depth) const { // BTW if this doesn
         double min_depth = 5;
         // std::cout << albedo << std::endl;
         // if (epsillon < 50*albedo) { // russian roulette path termination
-        if (false && depth <= min_depth || epsillon > px) {
+        if (depth <= min_depth || epsillon > px) {
             // std::cout << "new ray: " << new_ray.get_direction() << std::endl;
             Radiance Li = get_radiance(new_ray, depth+1);
             if (depth <= min_depth) {
