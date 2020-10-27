@@ -21,6 +21,9 @@ public:
     Vector sample_light(Sampler &sampler) const;
     bool is_equal(Object &other) const;
     Object* clone() const;
+    bool in_bounds(const Vector &upper_left, double x_len, double y_len, double z_len) const;
+    Vector most_negative() const;
+    Vector most_positive() const;
 };
 
 #endif

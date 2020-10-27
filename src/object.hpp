@@ -32,6 +32,9 @@ public:
 
     virtual bool is_equal(Object &other) const = 0;
     Ray importance_sample(const Ray &in, double t, Sampler& sampler) const { return distrib.generate_importance_sample(in, t, sampler, get_normal(in, t)); } 
+    virtual bool in_bounds(const Vector &upper_left, double x_len, double y_len, double z_len) const = 0;
+    virtual Vector most_negative() const = 0;
+    virtual Vector most_positive() const = 0;
 };
 
 #endif

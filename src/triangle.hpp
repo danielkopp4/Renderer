@@ -91,6 +91,70 @@ public:
         return false;
     }
 
+    bool in_bounds(const Vector &upper_left, double x_len, double y_len, double z_len) const {
+        Vector p1 = upper_left;
+        Vector p2 = upper_left + Vector(x_len, y_len, z_len);
+
+        if (p1 < verticies[0] && verticies[0] < p2) {
+            return true;
+        }
+
+         if (p1 < verticies[1] && verticies[1] < p2) {
+            return true;
+        }
+
+         if (p1 < verticies[2] && verticies[2] < p2) {
+            return true;
+        }
+
+        return false;
+    }
+
+    Vector most_negative() const {
+        int min_x = verticies[0].get_x(); 
+        int min_y = verticies[0].get_y();
+        int min_z = verticies[0].get_z();
+
+        for (int i = 1; i < 3; i++) {
+            if (verticies[i].get_x() < min_x) {
+                min_x = verticies[i].get_x();
+            }
+
+            if (verticies[i].get_y() < min_y) {
+                min_y = verticies[i].get_y();
+            }
+
+            if (verticies[i].get_z() < min_z) {
+                min_z = verticies[i].get_z();
+            }
+        }
+
+        return Vector(min_x, min_y, min_z);
+    }
+
+    Vector most_positive() const {
+        int max_x = verticies[0].get_x(); 
+        int max_y = verticies[0].get_y();
+        int max_z = verticies[0].get_z();
+
+        for (int i = 1; i < 3; i++) {
+            if (verticies[i].get_x() > max_x) {
+                max_x = verticies[i].get_x();
+            }
+
+            if (verticies[i].get_y() > max_y) {
+                max_y = verticies[i].get_y();
+            }
+
+            if (verticies[i].get_z() > max_z) {
+                max_z = verticies[i].get_z();
+            }
+        }
+
+        return Vector(max_x, max_y, max_z);
+
+    }
+
     void print() {
         std::cout << verticies[0] << " " << verticies[1] << " " << verticies[2] << std::endl;
     }

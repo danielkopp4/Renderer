@@ -92,3 +92,16 @@ Radiance Sphere::get_emission(const Ray &ray, double t) const {
 
     return (emission * (ray.get_direction() * -1).dot(get_normal(ray, t))).abs();
 }
+
+bool Sphere::in_bounds(const Vector &upper_left, double x_len, double y_len, double z_len) const {
+    std::cerr << "SPHERE INTERSECTION NOT IMPLEMENTED" << std::endl;
+    return false;
+}
+
+Vector Sphere::most_negative() const {
+    return center + (Vector(radius, radius, radius) * -1);
+}
+
+Vector Sphere::most_positive() const {
+    return center + Vector(radius, radius, radius);
+}

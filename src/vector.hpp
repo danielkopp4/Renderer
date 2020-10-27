@@ -25,6 +25,8 @@ public:
     Vector operator%(const Vector &other) const { return Vector(y*other.z-z*other.y,z*other.x-x*other.z,x*other.y-y*other.x);} // rewrite
     Vector abs() const { return Vector(fabs(x), fabs(y), fabs(z)); }
 
+    bool operator<(const Vector &other) { return x < other.x && y < other.y && z < other.z; }
+    
     bool operator==(const Vector &other) const { return x == other.x && y == other.y && z == other.z; }
 
     friend std::ostream& operator<< (std::ostream& out, const Vector& vector); 
