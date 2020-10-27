@@ -95,15 +95,15 @@ public:
         Vector p1 = upper_left;
         Vector p2 = upper_left + Vector(x_len, y_len, z_len);
 
-        if (p1 < verticies[0] && verticies[0] < p2) {
+        if (p1 <= verticies[0] && verticies[0] <= p2) {
             return true;
         }
 
-         if (p1 < verticies[1] && verticies[1] < p2) {
+         if (p1 <= verticies[1] && verticies[1] <= p2) {
             return true;
         }
 
-         if (p1 < verticies[2] && verticies[2] < p2) {
+         if (p1 <= verticies[2] && verticies[2] <= p2) {
             return true;
         }
 
@@ -111,9 +111,9 @@ public:
     }
 
     Vector most_negative() const {
-        int min_x = verticies[0].get_x(); 
-        int min_y = verticies[0].get_y();
-        int min_z = verticies[0].get_z();
+        double min_x = verticies[0].get_x(); 
+        double min_y = verticies[0].get_y();
+        double min_z = verticies[0].get_z();
 
         for (int i = 1; i < 3; i++) {
             if (verticies[i].get_x() < min_x) {
@@ -129,13 +129,14 @@ public:
             }
         }
 
-        return Vector(min_x, min_y, min_z);
+        Vector ret (min_x, min_y, min_z);
+        return ret;
     }
 
     Vector most_positive() const {
-        int max_x = verticies[0].get_x(); 
-        int max_y = verticies[0].get_y();
-        int max_z = verticies[0].get_z();
+        double max_x = verticies[0].get_x(); 
+        double max_y = verticies[0].get_y();
+        double max_z = verticies[0].get_z();
 
         for (int i = 1; i < 3; i++) {
             if (verticies[i].get_x() > max_x) {
@@ -151,8 +152,8 @@ public:
             }
         }
 
-        return Vector(max_x, max_y, max_z);
-
+        Vector ret(max_x, max_y, max_z);
+        return ret;
     }
 
     void print() {

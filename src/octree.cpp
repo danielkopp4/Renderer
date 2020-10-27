@@ -1,11 +1,14 @@
 #include "octree.hpp"
+#include <memory>
 #include <iostream>
 
 std::shared_ptr<std::vector<Object*> > Node::in(const std::vector<Object*> &to_add, const Bounds &bounds) {
-    std::shared_ptr<std::vector<Object*> > ret = std::shared_ptr<std::vector<Object*> >::make_shared();
+    // std::shared_ptr<std::vector<Object*> > ret = std::shared_ptr<std::vector<Object*> >::make_shared();
+    std::shared_ptr<std::vector<Object*> > ret = std::shared_ptr<std::vector<Object*> >(new std::vector<Object*>());
     for (int i = 0; i < to_add.size(); i++) {
         if (to_add[i]->in_bounds(bounds.point, bounds.x_len, bounds.y_len, bounds.z_len)) {
             ret->push_back(to_add[i]);
+            // std::cout << "adding object!" << std::endl;
         }
     }
     return ret;
@@ -38,9 +41,9 @@ bool Node::ray_intersect(const Ray &ray) const {
 }
 
 Node::Node(const std::vector<Object*>& to_add, const Bounds &bounds) {
-    std::vector<Object*> &objects_in_bounds = *in(to_add, bounds);
+    std::shared_ptr<std::vector<Object*> > objects_in_bounds = in(to_add, bounds);
     bounding_box = bounds;
-    if (objects.size() > 8) {
+    if (objects_in_bounds->size() > 8) {
         is_end = false;
 
         double new_x_len = bounding_box.x_len / 2;
@@ -66,17 +69,18 @@ Node::Node(const std::vector<Object*>& to_add, const Bounds &bounds) {
 
         nodes = new Node*[8];
 
-        nodes[0] = new Node(objects_in_bounds, b000);
-        nodes[1] = new Node(objects_in_bounds, b100);
-        nodes[2] = new Node(objects_in_bounds, b010);
-        nodes[3] = new Node(objects_in_bounds, b110);
-        nodes[4] = new Node(objects_in_bounds, b001);
-        nodes[5] = new Node(objects_in_bounds, b101);
-        nodes[6] = new Node(objects_in_bounds, b011);
-        nodes[7] = new Node(objects_in_bounds, b111);
+        nodes[0] = new Node(*objects_in_bounds, b000);
+        nodes[1] = new Node(*objects_in_bounds, b100);
+        nodes[2] = new Node(*objects_in_bounds, b010);
+        nodes[3] = new Node(*objects_in_bounds, b110);
+        nodes[4] = new Node(*objects_in_bounds, b001);
+        nodes[5] = new Node(*objects_in_bounds, b101);
+        nodes[6] = new Node(*objects_in_bounds, b011);
+        nodes[7] = new Node(*objects_in_bounds, b111);
     } else {
         is_end = true;
-        objects = to_add;
+        // std::cout << "created 1 end node" << std::endl;
+        objects = *objects_in_bounds;
         nodes = NULL;
     }
 }
@@ -111,20 +115,23 @@ Node::~Node() {
 }
 
 std::shared_ptr<std::vector<Object*> > Node::get_objects(const Ray &ray) const {
-    std::shared_ptr<std::vector<Object*> > ret = std::shared_ptr<std::vector<Object*> >::make_shared();
+    std::shared_ptr<std::vector<Object*> > ret = std::shared_ptr<std::vector<Object*> >(new std::vector<Object*>());
     
     if (!ray_intersect(ray)) {
         return ret; // if no intersection return no objects
+    } else {
+        // std::cout << "RAY INTERSECTION!" << std::endl;
     }
 
     if (is_end) {
         *ret = objects;
+        std::cout << ret->size() << std::endl;
         return ret;
     }
 
-    for (int i = 0; i < 8; i++) {
+    for (unsigned int i = 0; i < 8; i++) {
         std::shared_ptr<std::vector<Object*> > curr = nodes[i]->get_objects(ray);
-        for (int j = 0; j < curr->size(); j++) {
+        for (unsigned int j = 0; j < curr->size(); j++) {
             ret->push_back((*curr)[j]);
         }
     }
@@ -133,9 +140,9 @@ std::shared_ptr<std::vector<Object*> > Node::get_objects(const Ray &ray) const {
 }
 
 Bounds Octree::get_bounds(const std::vector<Object*> &objects) {
-    Vector most_negative;
-    Vector most_positive;
-    for (int i = 0; i < objects.size(); i++) {
+    Vector most_negative = objects[0]->most_negative();
+    Vector most_positive = objects[0]->most_positive();
+    for (unsigned int i = 1; i < objects.size(); i++) {
         Vector negative = objects[i]->most_negative();
         if (negative.get_x() < most_negative.get_x()) {
             most_negative.set_x(negative.get_x());
@@ -151,16 +158,16 @@ Bounds Octree::get_bounds(const std::vector<Object*> &objects) {
 
         Vector positive = objects[i]->most_positive();
 
-        if (positive.get_x() < most_positive.get_x()) {
+        if (positive.get_x() > most_positive.get_x()) {
             most_positive.set_x(positive.get_x());
         }
 
-        if (positive.get_y() < most_positive.get_y()) {
+        if (positive.get_y() > most_positive.get_y()) {
             most_positive.set_y(positive.get_y());
         }
 
-        if (positive.get_y() < most_positive.get_y()) {
-            most_positive.set_y(positive.get_y());
+        if (positive.get_z() > most_positive.get_z()) {
+            most_positive.set_z(positive.get_z());
         }
     }
     Vector len = most_positive - most_negative;

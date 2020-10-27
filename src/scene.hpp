@@ -19,6 +19,7 @@ private:
 
     std::mutex mutex;
 public:
+    Scene() : object_accel(NULL) {}
     void add_object(const Object &object);
     void add_light(const Object &light);
     bool is_light(const Object &light) const;

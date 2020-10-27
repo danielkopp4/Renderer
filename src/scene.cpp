@@ -5,15 +5,22 @@ Intersection Scene::closest_intersection(const Ray& ray) {
     
 
     Intersection closestIntersection;
-    std::vector<Object*> &current_objects = *object_accel->get_objects(ray);
+    if (object_accel == NULL) {
+        std::cerr << "accell undefined" << std::endl;
+        exit(1);
+    }
+    std::shared_ptr<std::vector<Object*> > current_objects = object_accel->get_objects(ray);
+    // mutex.lock();
+    // std::cout << current_objects->size() << std::endl;
+    // mutex.unlock();
     // std::cout << current_objects.size()  << " vs " << objects.size() << std::endl;
-    for (size_t i = 0; i < current_objects.size(); ++i) {
-        // Intersection intersection = current_objects[i]->intersect(ray);
-        // if (intersection.get_t() < closestIntersection.get_t()) {
-        //     closestIntersection = intersection;
-        // }
+    for (size_t i = 0; i < current_objects->size(); ++i) {
+        Intersection intersection = (*current_objects)[i]->intersect(ray);
+        if (intersection.get_t() < closestIntersection.get_t()) {
+            closestIntersection = intersection;
+        }
         mutex.lock();
-        std::cout << current_objects[i] << std::endl;
+        std::cout << intersection.get_t() << std::endl;
         mutex.unlock();
     }
     return closestIntersection;

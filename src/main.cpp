@@ -97,7 +97,7 @@ int main() {
     // Intersection a = scene.closest_intersection(tester);
     // sphere.get_emission(tester, a.get_t());
     scene.convert_to_accel();
-    std::cout << "running!!!!" << std::endl;
+    // std::cout << "running!!!!" << std::endl;
 
     std::cout << "starting..." << "\r" << std::flush;
     Renderer renderer(film, scene, camera, sampler);
