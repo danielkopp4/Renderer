@@ -20,14 +20,14 @@ private:
     bool is_end;
     Node** nodes;
     Bounds bounding_box;
-    std::shared_ptr<std::vector<Object*>> in(const std::vector<Object*> &to_add, const Bounds &bounds); 
+    std::shared_ptr<std::vector<Object*> > in(const std::vector<Object*> &to_add, const Bounds &bounds); 
     bool ray_intersect(const Ray &ray) const;
 public:
     Node(const std::vector<Object*>& to_add, const Bounds &bounds); // and bounds
     Node(const Node &other);
     Node& operator=(const Node &other);
     ~Node();
-    std::shared_ptr<std::vector<Object*>> get_objects(const Ray &ray) const;
+    std::shared_ptr<std::vector<Object*> > get_objects(const Ray &ray) const;
     // void add(const std::vector<Object*>& to_add);
 };
 
@@ -37,9 +37,10 @@ private:
     Node* head;
     Bounds get_bounds(const std::vector<Object*> &objects);
 public:
+    Octree() : head(NULL), size(0) {}
     Octree(const std::vector<Object*> &objects);
     ~Octree();
-    std::shared_ptr<std::vector<Object*>> get_objects(const Ray &ray) const; 
+    std::shared_ptr<std::vector<Object*> > get_objects(const Ray &ray) const; 
 };
 
 #endif

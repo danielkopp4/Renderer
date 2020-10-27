@@ -16,7 +16,7 @@ public:
         emission = emission_;
     } 
 
-    virtual Object* clone() const;
+    // virtual Object* clone() const;
 
     Radiance get_emission(const Ray &ray, double t) const;
     virtual Intersection intersect(const Ray & ray) const;

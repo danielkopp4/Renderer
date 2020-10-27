@@ -1,8 +1,8 @@
 #include "octree.hpp"
 #include <iostream>
 
-std::shared_ptr<std::vector<Object*>> Node::in(const std::vector<Object*> &to_add, const Bounds &bounds) {
-    std::shared_ptr<std::vector<Object*>> ret = std::shared_ptr<std::vector<Object*>>::make_shared();
+std::shared_ptr<std::vector<Object*> > Node::in(const std::vector<Object*> &to_add, const Bounds &bounds) {
+    std::shared_ptr<std::vector<Object*> > ret = std::shared_ptr<std::vector<Object*> >::make_shared();
     for (int i = 0; i < to_add.size(); i++) {
         if (to_add[i]->in_bounds(bounds.point, bounds.x_len, bounds.y_len, bounds.z_len)) {
             ret->push_back(to_add[i]);
@@ -110,8 +110,8 @@ Node::~Node() {
     delete [] nodes;
 }
 
-std::shared_ptr<std::vector<Object*>> Node::get_objects(const Ray &ray) const {
-    std::shared_ptr<std::vector<Object*>> ret = std::shared_ptr<std::vector<Object*>>::make_shared();
+std::shared_ptr<std::vector<Object*> > Node::get_objects(const Ray &ray) const {
+    std::shared_ptr<std::vector<Object*> > ret = std::shared_ptr<std::vector<Object*> >::make_shared();
     
     if (!ray_intersect(ray)) {
         return ret; // if no intersection return no objects
@@ -123,7 +123,7 @@ std::shared_ptr<std::vector<Object*>> Node::get_objects(const Ray &ray) const {
     }
 
     for (int i = 0; i < 8; i++) {
-        std::shared_ptr<std::vector<Object*>> curr = nodes[i]->get_objects(ray);
+        std::shared_ptr<std::vector<Object*> > curr = nodes[i]->get_objects(ray);
         for (int j = 0; j < curr->size(); j++) {
             ret->push_back((*curr)[j]);
         }
@@ -181,8 +181,9 @@ Octree::Octree(const std::vector<Object*> &objects) {
     size = objects.size();
     Bounds bounds = get_bounds(objects);
     head = new Node(objects, bounds);
+
 }
 
- std::shared_ptr<std::vector<Object*>> Octree::get_objects(const Ray &ray) const {
+ std::shared_ptr<std::vector<Object*> > Octree::get_objects(const Ray &ray) const {
      return head->get_objects(ray);
  }

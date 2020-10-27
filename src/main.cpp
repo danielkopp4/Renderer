@@ -51,7 +51,7 @@ void add_sample_scene(const Ray &view, Scene &scene) {
     Sphere sphere_2(radius, view.get_origin() + offset_2);
     Sphere sphere_3 (radius, view.get_origin() + offset_3, Radiance(0.5, 0.5, 0.5));
 
-    Plane plane (Vector(0, 0, 3.5), Vector(0, 0.2, -1), BRDF(Radiance(0.23, 0.159, 0.12), Radiance(0, 0, 0), false)); //, BRDF(Radiance(1, 1, 1)), Radiance(1, 1, 1));
+    // Plane plane (Vector(0, 0, 3.5), Vector(0, 0.2, -1), BRDF(Radiance(0.23, 0.159, 0.12), Radiance(0, 0, 0), false)); //, BRDF(Radiance(1, 1, 1)), Radiance(1, 1, 1));
     Vector verticies[3] = { Vector(-0.5, -0.5, 1), Vector(0.5, 0, 1), Vector(0, 0.5, 1)};
     Triangle tri(verticies, BRDF(Radiance(1,1,1)), Radiance(1, 1, 1));
 
@@ -96,6 +96,8 @@ int main() {
     // Ray tester (Vector(0,0,0), Vector(-0.5,0,2));
     // Intersection a = scene.closest_intersection(tester);
     // sphere.get_emission(tester, a.get_t());
+    scene.convert_to_accel();
+    std::cout << "running!!!!" << std::endl;
 
     std::cout << "starting..." << "\r" << std::flush;
     Renderer renderer(film, scene, camera, sampler);

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 # set the project name
 project(renderer)
 
-
+set (CMAKE_CXX_STANDARD 11)
 
 file(GLOB SOURCES "src/*.cpp")
 set(EXECUTABLE_OUTPUT_PATH "build")
